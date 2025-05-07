@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech/AI - Ethan Babb's Blog</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Ethan Babb</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="realestate.html">Real Estate</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="urbanplanning.html">Urban Planning</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="business.html">Business</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="tech.html">Tech/AI</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="football.html">College Football</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="travel.html">Traveling</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About Me</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h1 class="fw-bold">Tech & AI</h1>
+                    <p class="lead">The latest in technology innovation and artificial intelligence</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Today's Top Articles</h2>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Sort By
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                            <li><a class="dropdown-item" href="#">Latest</a></li>
+                            <li><a class="dropdown-item" href="#">Most Popular</a></li>
+                            <li><a class="dropdown-item" href="#">Most Discussed</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div id="category-articles">
+                    <!-- Articles will be loaded here by JavaScript -->
+                    <div class="text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-header">Sources</div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <a href="https://techcrunch.com" target="_blank" class="text-decoration-none">TechCrunch</a>
+                                <span class="badge bg-primary rounded-pill">Daily</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <a href="https://www.technologyreview.com" target="_blank" class="text-decoration-none">MIT Technology Review</a>
+                                <span class="badge bg-primary rounded-pill">Daily</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <a href="https://venturebeat.com" target="_blank" class="text-decoration-none">VentureBeat</a>
+                                <span class="badge bg-primary rounded-pill">Daily</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <a href="https://arstechnica.com" target="_blank" class="text-decoration-none">Ars Technica</a>
+                                <span class="badge bg-primary rounded-pill">Daily</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <a href="https://www.theverge.com/ai-artificial-intelligence" target="_blank" class="text-decoration-none">The Verge (AI)</a>
+                                <span class="badge bg-primary rounded-pill">Daily</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header">Related Categories</div>
+                    <div class="card-body">
+                        <div class="list-group">
+                            <a href="business.html" class="list-group-item list-group-item-action">Business</a>
+                            <a href="urbanplanning.html" class="list-group-item list-group-item-action">Urban Planning</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">Tech Topics</div>
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge bg-secondary">Artificial Intelligence</span>
+                            <span class="badge bg-secondary">Machine Learning</span>
+                            <span class="badge bg-secondary">Blockchain</span>
+                            <span class="badge bg-secondary">Edge Computing</span>
+                            <span class="badge bg-secondary">Quantum Computing</span>
+                            <span class="badge bg-secondary">Robotics</span>
+                            <span class="badge bg-secondary">Cybersecurity</span>
+                            <span class="badge bg-secondary">Cloud Computing</span>
+                            <span class="badge bg-secondary">IoT</span>
+                            <span class="badge bg-secondary">5G</span>
+                            <span class="badge bg-secondary">AR/VR</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 bg-dark text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2025 Ethan Babb. All Rights Reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="text-white"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Comment Modal -->
+    <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="commentModalLabel">Add a Comment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="commentForm">
+                        <input type="hidden" id="articleIdInput" value="">
+                        <div class="mb-3">
+                            <label for="commentText" class="form-label">Your Comment</label>
+                            <textarea class="form-control" id="commentText" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Comment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+</body>
+</html>
