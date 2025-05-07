@@ -1,279 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
-    <!-- Individual Article Page Template (hidden by default) -->
-    <div id="articlePage" style="display: none;">
-        <div class="main-content">
-            <article class="full-article">
-                <div class="article-header">
-                    <div class="article-category" id="articlePageCategory">Category</div>
-                    <h1 id="articlePageTitle">Article Title</h1>
-                    <div class="article-byline" id="articlePageByline">By Ethan Babb | Date</div>
-                </div>
-                <div class="article-featured-image" id="articlePageImage"></div>
-                <div class="article-full-content" id="articlePageContent">
-                    Article content goes here...
-                </div>
-                
-                <!-- Comments Section -->
-                <div class="comments-section">
-                    <h3>Comments</h3>
-                    <form class="comment-form" id="commentForm">
-                        <textarea placeholder="Add your comment..." required></textarea>
-                        <button type="submit">Post Comment</button>
-                    </form>
-                    <div class="comments-list" id="commentsList">
-                        <!-- Comments will be added here -->
-                    </div>
-                </div>
-            </article>
-        </div>
-    </div>
-    
-    <script>
-        // JavaScript for interactive features
-        document.addEventListener('DOMContentLoaded', function() {
-            // Update current date
-            const currentDateElement = document.getElementById('current-date');
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const today = new Date();
-            currentDateElement.textContent = today.toLocaleDateString('en-US', options).toUpperCase();
-            
-            // Mobile menu toggle
-            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-            const navLinks = document.getElementById('navLinks');
-            
-            mobileMenuToggle.addEventListener('click', function() {
-                navLinks.classList.toggle('active');
-            });
-            
-            // Category filtering
-            const categoryFilters = document.querySelectorAll('.category-filter');
-            const articleCards = document.querySelectorAll('.article-card');
-            const articleGrid = document.getElementById('articleGrid');
-            
-            categoryFilters.forEach(filter => {
-                filter.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // Remove active class from all filters
-                    categoryFilters.forEach(f => f.classList.remove('active'));
-                    
-                    // Add active class to clicked filter
-                    this.classList.add('active');
-                    
-                    const category = this.getAttribute('data-category');
-                    let visibleArticles = 0;
-                    
-                    // Remove any existing "no articles" message
-                    const existingMessage = document.getElementById('noArticlesMessage');
-                    if (existingMessage) {
-                        existingMessage.remove();
-                    }
-                    
-                    // Show all articles if "Home" is clicked
-                    if (category === 'all') {
-                        articleCards.forEach(card => {
-                            card.style.display = 'block';
-                            visibleArticles++;
-                        });
-                    } else {
-                        // Filter articles by category
-                        articleCards.forEach(card => {
-                            const cardCategory = card.querySelector('.article-category').textContent;
-                            if (cardCategory === category) {
-                                card.style.display = 'block';
-                                visibleArticles++;
-                            } else {
-                                card.style.display = 'none';
-                            }
-                        });
-                    }
-                    
-                    // Check if there are no articles in this category
-                    if (visibleArticles === 0) {
-                        const noArticlesMessage = document.createElement('div');
-                        noArticlesMessage.className = 'no-articles';
-                        noArticlesMessage.id = 'noArticlesMessage';
-                        noArticlesMessage.innerHTML = `<h3>No articles found in the "${category}" category.</h3><p>Check back soon for new content or select another category.</p>`;
-                        articleGrid.appendChild(noArticlesMessage);
-                    }
-                });
-            });
-            
-            // Article writing modal
-            const writeArticleBtn = document.getElementById('writeArticleBtn');
-            const articleModal = document.getElementById('articleModal');
-            const closeModal = document.getElementById('closeModal');
-            const articleForm = document.getElementById('articleForm');
-            const articleImage = document.getElementById('articleImage');
-            const imagePreview = document.getElementById('imagePreview');
-            
-            // Open modal
-            writeArticleBtn.addEventListener('click', function() {
-                articleModal.style.display = 'block';
-            });
-            
-            // Close modal
-            closeModal.addEventListener('click', function() {
-                articleModal.style.display = 'none';
-            });
-            
-            // Close modal when clicking outside
-            window.addEventListener('click', function(event) {
-                if (event.target === articleModal) {
-                    articleModal.style.display = 'none';
-                }
-            });
-            
-            // Image preview
-            articleImage.addEventListener('change', function() {
-                const file = this.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        imagePreview.style.backgroundImage = `url(${e.target.result})`;
-                        imagePreview.textContent = '';
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-            
-            // Form submission
-            articleForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Get form values
-                const title = document.getElementById('articleTitle').value;
-                const category = document.getElementById('articleCategory').value;
-                const content = document.getElementById('articleContent').value;
-                
-                // Create new article (in a real app, this would save to a database)
-                alert(`Article "${title}" in category "${category}" has been published!`);
-                
-                // Reset form
-                articleModal.style.display = 'none';
-                articleForm.reset();
-                imagePreview.style.backgroundImage = '';
-                imagePreview.textContent = 'No image selected';
-            });
-            
-            // Article links (make sure article clicks work)
-            const articleLinks = document.querySelectorAll('.article-title a');
-            const mainContent = document.querySelector('.main-content');
-            const articlePage = document.getElementById('articlePage');
-            
-            articleLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // Get article data from the card
-                    const articleCard = this.closest('.article-card');
-                    const title = this.textContent;
-                    const category = articleCard.querySelector('.article-category').textContent;
-                    const byline = articleCard.querySelector('.article-byline').textContent;
-                    const content = articleCard.querySelector('p').textContent;
-                    const imageBg = articleCard.querySelector('.article-image').style.backgroundImage;
-                    
-                    // Populate article page
-                    document.getElementById('articlePageTitle').textContent = title;
-                    document.getElementById('articlePageCategory').textContent = category;
-                    document.getElementById('articlePageByline').textContent = byline;
-                    document.getElementById('articlePageContent').innerHTML = `<p>${content}</p><p>This is an expanded version of the article that would show the full content. In a real blog, this would contain multiple paragraphs of detailed information about the topic.</p><p>The article would go into greater depth about ${title.toLowerCase()}, providing insights, analysis, and perhaps some data or quotations from relevant sources.</p><p>As the blog owner, you would write this content through the article creation interface, which would then be saved and displayed here when a reader clicks on the article title.</p>`;
-                    document.getElementById('articlePageImage').style.backgroundImage = imageBg;
-                    
-                    // Show article page
-                    mainContent.style.display = 'none';
-                    articlePage.style.display = 'block';
-                    
-                    // Add back button
-                    const backButton = document.createElement('button');
-                    backButton.textContent = '← Back to Home';
-                    backButton.className = 'back-button';
-                    
-                    backButton.addEventListener('click', function() {
-                        mainContent.style.display = 'grid';
-                        articlePage.style.display = 'none';
-                        this.remove();
-                    });
-                    
-                    articlePage.insertBefore(backButton, articlePage.firstChild);
-                });
-            });
-            
-            // Comment system
-            const commentForm = document.getElementById('commentForm');
-            const commentsList = document.getElementById('commentsList');
-            
-            commentForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const commentText = this.querySelector('textarea').value;
-                if (!commentText.trim()) return;
-                
-                // Create new comment (only visible to the blog owner)
-                const newComment = document.createElement('div');
-                newComment.className = 'comment';
-                
-                const commentAuthor = document.createElement('div');
-                commentAuthor.className = 'comment-author';
-                commentAuthor.textContent = 'Ethan Babb (You)';
-                
-                const commentDate = document.createElement('div');
-                commentDate.className = 'comment-date';
-                const now = new Date();
-                commentDate.textContent = `${now.toLocaleDateString()} at ${now.toLocaleTimeString()}`;
-                
-                const commentContent = document.createElement('div');
-                commentContent.className = 'comment-content';
-                commentContent.textContent = commentText;
-                
-                newComment.appendChild(commentAuthor);
-                newComment.appendChild(commentDate);
-                newComment.appendChild(commentContent);
-                
-                commentsList.appendChild(newComment);
-                
-                // Reset form
-                this.reset();
-            });
-            
-            // Content refresh implementation - twice daily refreshes
-            function scheduleRefreshes() {
-                // This function sets up the twice-daily content refreshes
-                // It's simplified here for demo purposes but would use a backend in production
-                
-                // Get current time
-                const now = new Date();
-                const currentHour = now.getHours();
-                
-                // Check refresh times (8am and 4pm)
-                if ((currentHour === 8 || currentHour === 16) && now.getMinutes() === 0) {
-                    refreshContent();
-                }
-                
-                // Demo notification (this would be removed in production)
-                // Just to show the feature working during testing
-                setTimeout(function() {
-                    const refreshNotification = document.getElementById('refreshNotification');
-                    refreshNotification.style.display = 'block';
-                    
-                    setTimeout(function() {
-                        refreshNotification.style.display = 'none';
-                    }, 3000);
-                }, 30000); // Show notification after 30 seconds for demo
-            }
-            
-            // Start scheduling refreshes
-            scheduleRefreshes();
-            
-            // Check every minute
-            setInterval(scheduleRefreshes, 60000);
-        });
-    </script>
-</body>
-</html><meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ethan Babb's Blog</title>
     <style>
@@ -551,6 +279,10 @@
             margin-bottom: 10px;
         }
         
+        .comment-content {
+            line-height: 1.5;
+        }
+        
         /* Sidebar for About Me */
         .sidebar {
             padding: 20px;
@@ -792,6 +524,23 @@
             z-index: 100;
             display: none;
         }
+        
+        /* Full Article Page */
+        .full-article {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .article-full-content {
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        
+        .article-full-content p {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -843,7 +592,7 @@
     </nav>
     
     <!-- Main Content -->
-    <div class="main-content">
+    <div class="main-content" id="mainContent">
         <div class="article-grid" id="articleGrid">
             <!-- Feature Article -->
             <article class="article-card feature-article">
@@ -857,7 +606,7 @@
                     </div>
                 </div>
                 <div class="article-content">
-                    <h2 class="article-title"><a href="#article1">Commercial Real Estate Market Trends for 2025</a></h2>
+                    <h2 class="article-title"><a href="#article1" class="article-link">Commercial Real Estate Market Trends for 2025</a></h2>
                     <div class="article-byline">By Ethan Babb | May 5, 2025</div>
                     <p>Analysis of emerging trends in commercial real estate, including the impact of remote work on office spaces. The market is seeing significant shifts as companies adapt to new workplace models post-pandemic.</p>
                 </div>
@@ -875,7 +624,7 @@
                     </div>
                 </div>
                 <div class="article-content">
-                    <h2 class="article-title"><a href="#article2">The Rise of 15-Minute Cities: Urban Design Revolution</a></h2>
+                    <h2 class="article-title"><a href="#article2" class="article-link">The Rise of 15-Minute Cities: Urban Design Revolution</a></h2>
                     <div class="article-byline">By Ethan Babb | May 3, 2025</div>
                     <p>Exploring how urban planners are reimagining city layouts to ensure residents can access essential services within a 15-minute walk or bike ride.</p>
                 </div>
@@ -893,7 +642,7 @@
                     </div>
                 </div>
                 <div class="article-content">
-                    <h2 class="article-title"><a href="#article3">Sustainable Business Models That Are Redefining Success</a></h2>
+                    <h2 class="article-title"><a href="#article3" class="article-link">Sustainable Business Models That Are Redefining Success</a></h2>
                     <div class="article-byline">By Ethan Babb | May 1, 2025</div>
                     <p>Highlighting companies that are proving profitability and environmental responsibility can go hand-in-hand through innovative business approaches.</p>
                 </div>
@@ -911,7 +660,7 @@
                     </div>
                 </div>
                 <div class="article-content">
-                    <h2 class="article-title"><a href="#article4">How AI is Transforming Real Estate Analytics</a></h2>
+                    <h2 class="article-title"><a href="#article4" class="article-link">How AI is Transforming Real Estate Analytics</a></h2>
                     <div class="article-byline">By Ethan Babb | April 28, 2025</div>
                     <p>Examining the ways artificial intelligence is changing how property values are assessed, market trends are predicted, and investment decisions are made.</p>
                 </div>
@@ -929,7 +678,7 @@
                     </div>
                 </div>
                 <div class="article-content">
-                    <h2 class="article-title"><a href="#article5">Spring Practice Standouts: Players to Watch This Fall</a></h2>
+                    <h2 class="article-title"><a href="#article5" class="article-link">Spring Practice Standouts: Players to Watch This Fall</a></h2>
                     <div class="article-byline">By Ethan Babb | April 25, 2025</div>
                     <p>Breaking down the top performers from spring practices across major college football programs and their potential impact on the upcoming season.</p>
                 </div>
@@ -947,7 +696,7 @@
                     </div>
                 </div>
                 <div class="article-content">
-                    <h2 class="article-title"><a href="#article6">Hidden Gems: Underrated Cities for Architecture Enthusiasts</a></h2>
+                    <h2 class="article-title"><a href="#article6" class="article-link">Hidden Gems: Underrated Cities for Architecture Enthusiasts</a></h2>
                     <div class="article-byline">By Ethan Babb | April 22, 2025</div>
                     <p>Discovering lesser-known destinations that offer remarkable architectural experiences, from historical preservation to cutting-edge modern design.</p>
                 </div>
@@ -1014,5 +763,326 @@
             </form>
         </div>
     </div>
+    
+    <!-- Individual Article Page Template (hidden by default) -->
+    <div id="articlePage" style="display: none;">
+        <button class="back-button" id="backButton">← Back to Home</button>
+        <div class="main-content">
+            <article class="full-article">
+                <div class="article-header">
+                    <div class="article-category" id="articlePageCategory">Category</div>
+                    <h1 id="articlePageTitle">Article Title</h1>
+                    <div class="article-byline" id="articlePageByline">By Ethan Babb | Date</div>
+                </div>
+                <div class="article-featured-image" id="articlePageImage"></div>
+                <div class="article-full-content" id="articlePageContent">
+                    Article content goes here...
+                </div>
+                
+                <!-- Comments Section -->
+                <div class="comments-section">
+                    <h3>Comments</h3>
+                    <form class="comment-form" id="commentForm">
+                        <textarea placeholder="Add your comment..." required></textarea>
+                        <button type="submit">Post Comment</button>
+                    </form>
+                    <div class="comments-list" id="commentsList">
+                        <!-- Comments will be added here -->
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+    
+    <script>
+        // JavaScript for interactive features
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update current date
+            const currentDateElement = document.getElementById('current-date');
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const today = new Date();
+            currentDateElement.textContent = today.toLocaleDateString('en-US', options).toUpperCase();
+            
+            // Mobile menu toggle
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const navLinks = document.getElementById('navLinks');
+            
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                });
+            }
+            
+            // Category filtering
+            const categoryFilters = document.querySelectorAll('.category-filter');
+            const articleCards = document.querySelectorAll('.article-card');
+            const articleGrid = document.getElementById('articleGrid');
+            
+            categoryFilters.forEach(filter => {
+                filter.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all filters
+                    categoryFilters.forEach(f => f.classList.remove('active'));
+                    
+                    // Add active class to clicked filter
+                    this.classList.add('active');
+                    
+                    const category = this.getAttribute('data-category');
+                    let visibleArticles = 0;
+                    
+                    // Remove any existing "no articles" message
+                    const existingMessage = document.getElementById('noArticlesMessage');
+                    if (existingMessage) {
+                        existingMessage.remove();
+                    }
+                    
+                    // Show all articles if "Home" is clicked
+                    if (category === 'all') {
+                        articleCards.forEach(card => {
+                            card.style.display = 'block';
+                            visibleArticles++;
+                        });
+                    } else {
+                        // Filter articles by category
+                        articleCards.forEach(card => {
+                            const cardCategory = card.querySelector('.article-category').textContent;
+                            if (cardCategory === category) {
+                                card.style.display = 'block';
+                                visibleArticles++;
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        });
+                    }
+                    
+                    // Check if there are no articles in this category
+                    if (visibleArticles === 0) {
+                        const noArticlesMessage = document.createElement('div');
+                        noArticlesMessage.className = 'no-articles';
+                        noArticlesMessage.id = 'noArticlesMessage';
+                        noArticlesMessage.innerHTML = `<h3>No articles found in the "${category}" category.</h3><p>Check back soon for new content or select another category.</p>`;
+                        articleGrid.appendChild(noArticlesMessage);
+                    }
+                });
+            });
+            
+            // Article writing modal
+            const writeArticleBtn = document.getElementById('writeArticleBtn');
+            const articleModal = document.getElementById('articleModal');
+            const closeModal = document.getElementById('closeModal');
+            const articleForm = document.getElementById('articleForm');
+            const articleImage = document.getElementById('articleImage');
+            const imagePreview = document.getElementById('imagePreview');
+            
+            // Open modal
+            if (writeArticleBtn) {
+                writeArticleBtn.addEventListener('click', function() {
+                    articleModal.style.display = 'block';
+                });
+            }
+            
+            // Close modal
+            if (closeModal) {
+                closeModal.addEventListener('click', function() {
+                    articleModal.style.display = 'none';
+                });
+            }
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === articleModal) {
+                    articleModal.style.display = 'none';
+                }
+            });
+            
+            // Image preview
+            if (articleImage) {
+                articleImage.addEventListener('change', function() {
+                    const file = this.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            imagePreview.style.backgroundImage = `url(${e.target.result})`;
+                            imagePreview.textContent = '';
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+            
+            // Form submission
+            if (articleForm) {
+                articleForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Get form values
+                    const title = document.getElementById('articleTitle').value;
+                    const category = document.getElementById('articleCategory').value;
+                    const content = document.getElementById('articleContent').value;
+                    
+                    // Create new article (in a real app, this would save to a database)
+                    alert(`Article "${title}" in category "${category}" has been published!`);
+                    
+                    // Reset form
+                    articleModal.style.display = 'none';
+                    articleForm.reset();
+                    imagePreview.style.backgroundImage = '';
+                    imagePreview.textContent = 'No image selected';
+                });
+            }
+            
+            // Article links functionality - FIXED to work properly
+            const articleLinks = document.querySelectorAll('.article-link');
+            const mainContent = document.getElementById('mainContent');
+            const articlePage = document.getElementById('articlePage');
+            const backButton = document.getElementById('backButton');
+            
+            // Handle article clicks
+            if (articleLinks) {
+                articleLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        // Get article data from the card
+                        const articleCard = this.closest('.article-card');
+                        const title = this.textContent;
+                        const category = articleCard.querySelector('.article-category').textContent;
+                        const byline = articleCard.querySelector('.article-byline').textContent;
+                        const content = articleCard.querySelector('p').textContent;
+                        const imageBg = articleCard.querySelector('.article-image').style.backgroundImage;
+                        
+                        // Populate article page
+                        document.getElementById('articlePageTitle').textContent = title;
+                        document.getElementById('articlePageCategory').textContent = category;
+                        document.getElementById('articlePageByline').textContent = byline;
+                        document.getElementById('articlePageContent').innerHTML = `
+                            <p>${content}</p>
+                            <p>This is an expanded version of the article that would show the full content. In a real blog, this would contain multiple paragraphs of detailed information about the topic.</p>
+                            <p>The article would go into greater depth about ${title.toLowerCase()}, providing insights, analysis, and perhaps some data or quotations from relevant sources.</p>
+                            <p>As the blog owner, you would write this content through the article creation interface, which would then be saved and displayed here when a reader clicks on the article title.</p>
+                        `;
+                        document.getElementById('articlePageImage').style.backgroundImage = imageBg;
+                        
+                        // Show article page
+                        mainContent.style.display = 'none';
+                        articlePage.style.display = 'block';
+                    });
+                });
+            }
+            
+            // Back button functionality
+            if (backButton) {
+                backButton.addEventListener('click', function() {
+                    mainContent.style.display = 'grid';
+                    articlePage.style.display = 'none';
+                });
+            }
+            
+            // Comment system - FIXED to ensure comments work
+            const commentForm = document.getElementById('commentForm');
+            const commentsList = document.getElementById('commentsList');
+            
+            if (commentForm) {
+                commentForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const commentText = this.querySelector('textarea').value;
+                    if (!commentText.trim()) return;
+                    
+                    // Create new comment (only visible to the blog owner)
+                    const newComment = document.createElement('div');
+                    newComment.className = 'comment';
+                    
+                    const commentAuthor = document.createElement('div');
+                    commentAuthor.className = 'comment-author';
+                    commentAuthor.textContent = 'Ethan Babb (You)';
+                    
+                    const commentDate = document.createElement('div');
+                    commentDate.className = 'comment-date';
+                    const now = new Date();
+                    commentDate.textContent = `${now.toLocaleDateString()} at ${now.toLocaleTimeString()}`;
+                    
+                    const commentContent = document.createElement('div');
+                    commentContent.className = 'comment-content';
+                    commentContent.textContent = commentText;
+                    
+                    newComment.appendChild(commentAuthor);
+                    newComment.appendChild(commentDate);
+                    newComment.appendChild(commentContent);
+                    
+                    commentsList.appendChild(newComment);
+                    
+                    // Reset form
+                    this.reset();
+                    
+                    // Show confirmation
+                    alert('Your comment has been posted!');
+                });
+            }
+            
+            // Initialize pre-existing comments
+            function addSampleComment(text, date) {
+                if (!commentsList) return;
+                
+                const comment = document.createElement('div');
+                comment.className = 'comment';
+                
+                const author = document.createElement('div');
+                author.className = 'comment-author';
+                author.textContent = 'Ethan Babb (You)';
+                
+                const commentDate = document.createElement('div');
+                commentDate.className = 'comment-date';
+                commentDate.textContent = date;
+                
+                const content = document.createElement('div');
+                content.className = 'comment-content';
+                content.textContent = text;
+                
+                comment.appendChild(author);
+                comment.appendChild(commentDate);
+                comment.appendChild(content);
+                
+                commentsList.appendChild(comment);
+            }
+            
+            // Add some sample comments
+            if (commentsList) {
+                addSampleComment('Great analysis! I've been following these trends and your insights are spot on.', 'May 3, 2025 at 2:15 PM');
+                addSampleComment('I'd be interested to hear more about how these developments might affect smaller markets.', 'May 4, 2025 at 9:30 AM');
+            }
+            
+            // Content refresh notification
+            const refreshNotification = document.getElementById('refreshNotification');
+            
+            function showRefreshNotification() {
+                if (refreshNotification) {
+                    refreshNotification.style.display = 'block';
+                    setTimeout(() => {
+                        refreshNotification.style.display = 'none';
+                    }, 3000);
+                }
+            }
+            
+            // Show refresh notification after page loads (for demo purposes)
+            setTimeout(showRefreshNotification, 15000);
+            
+            // Schedule content refreshes (simplified for demo)
+            function checkRefreshSchedule() {
+                const now = new Date();
+                const hour = now.getHours();
+                const minute = now.getMinutes();
+                
+                // Check if it's 8 AM or 4 PM exactly
+                if ((hour === 8 || hour === 16) && minute === 0) {
+                    showRefreshNotification();
+                }
+            }
+            
+            // Check for scheduled refreshes every minute
+            setInterval(checkRefreshSchedule, 60000);
+        });
+    </script>
 </body>
 </html>
