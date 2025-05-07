@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethan Babb's Blog</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        
+        /* Header styles */
+        .site-header {
+            background-color: #0052e9;
+            color: white;
+            padding: 20px 0;
+            background-image: linear-gradient(45deg, #0052e9, #0033a0);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .site-header::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M0,10 C30,20 70,10 100,30 L100,0 L0,0 Z" fill="%230066ff" opacity="0.3"/></svg>');
+            background-size: 100% 100%;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .site-logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+        
+        .header-right {
+            text-align: right;
+        }
+        
+        .date-display {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .tagline {
+            font-size: 1rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        /* Navigation */
+        .main-nav {
+            background-color: #fff;
+            border-bottom: 1px solid #e9e9e9;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li a {
+            display: block;
+            padding: 15px 20px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links li a:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-right a {
+            padding: 15px 10px;
+            color: #333;
+        }
+        
+        /* Main content */
+        .main-content {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        
+        /* Article cards */
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .article-card {
+            background-color: #fff;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .article-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .article-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .article-category {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #0052e9;
+            color: white;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-radius: 3px;
+        }
+        
+        .article-comments {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .article-comments svg {
+            margin-right: 5px;
+        }
+        
+        .article-content {
+            padding: 20px;
+        }
+        
+        .article-title {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+        
+        .article-title a {
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .article-title a:hover {
+            color: #0052e9;
+        }
+        
+        .article-byline {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 10px;
+        }
+        
+        /* Feature article (top article) */
+        .feature-article {
+            grid-column: span 3;
+            position: relative;
+        }
+        
+        .feature-article .article-image {
+            height: 400px;
+        }
+        
+        .feature-article .article-title {
+            font-size: 2rem;
+        }
+        
+        /* Comments */
+        .comments-section {
+            margin-top: 20px;
+            border-top: 1px solid #e9e9e9;
+            padding-top: 20px;
+        }
+        
+        .comment-form {
+            margin-bottom: 30px;
+        }
+        
+        .comment-form textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+            margin-bottom: 10px;
+        }
+        
+        .comment-form button {
+            background-color: #0052e9;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .comment {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .comment-author {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .comment-date {
+            color: #777;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+        
+        /* Sidebar for About Me */
+        .sidebar {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .sidebar h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+        
+        .profile {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .profile-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            margin-right: 15px;
+        }
+        
+        .profile-info h4 {
+            margin-bottom: 5px;
+        }
+        
+        .profile-info p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 1000px) {
+            .article-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .feature-article {
+                grid-column: span 2;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .article-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .feature-article {
+                grid-column: span 1;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+        }
+        
+        /* Modal for writing articles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background-color: white;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 5px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h2 {
+            font-size: 1.5rem;
+        }
+        
+        .close-modal {
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .article-form input,
+        .article-form select,
+        .article-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-family: inherit;
+        }
+        
+        .article-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .article-form button {
+            background-color: #0052e9;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .image-upload-preview {
+            width: 100%;
+            height: 200px;
+            background-color: #f0f0f0;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #777;
+            border: 2px dashed #ccc;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        /* Write article button */
+        .write-article-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #0052e9;
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        .write-article-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="site-logo">Ethan Babb</div>
+            <div class="header-right">
+                <div class="date-display">TUESDAY, MAY 6, 2025</div>
+                <div class="tagline">INSIGHTS WITH PERSPECTIVE</div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#real-estate">Real Estate</a></li>
+                <li><a href="#urban-planning">Urban Planning</a></li>
+                <li><a href="#business">Business</a></li>
+                <li><a href="#tech-ai">Tech/AI</a></li>
+                <li><a href="#college-football">College Football</a></li>
+                <li><a href="#traveling">Traveling</a></li>
+            </ul>
+            <div class="nav-right">
+                <a href="#about-me">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </a>
+                <a href="#search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="article-grid">
+            <!-- Feature Article -->
+            <article class="article-card feature-article">
+                <div class="article-image" style="background-image: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80');">
+                    <div class="article-category">Real Estate</div>
+                    <div class="article-comments">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        3 Comments / 3 New
+                    </div>
+                </div>
+                <div class="article-content">
+                    <h2 class="article-title"><a href="#article1">Commercial Real Estate Market Trends for 2025</a></h2>
+                    <div class="article-byline">By Ethan Babb | May 5, 2025</div>
+                    <p>Analysis of emerging trends in commercial real estate, including the impact of remote work on office spaces. The market is seeing significant shifts as companies adapt to new workplace models post-pandemic.</p>
+                </div>
+            </article>
+            
+            <!-- Article 2 -->
+            <article class="article-card">
+                <div class="article-image" style="background-image: url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80');">
+                    <div class="article-category">Urban Planning</div>
+                    <div class="article-comments">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        2 Comments / 1 New
+                    </div>
+                </div>
+                <div class="article-content">
+                    <h2 class="article-title"><a href="#article2">The Rise of 15-Minute Cities: Urban Design Revolution</a></h2>
+                    <div class="article-byline">By Ethan Babb | May 3, 2025</div>
+                    <p>Exploring how urban planners are reimagining city layouts to ensure residents can access essential services within a 15-minute walk or bike ride.</p>
+                </div>
+            </article>
+            
+            <!-- Article 3 -->
+            <article class="article-card">
+                <div class="article-image" style="background-image: url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80');">
+                    <div class="article-category">Business</div>
+                    <div class="article-comments">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        1 Comment / 1 New
+                    </div>
+                </div>
+                <div class="article-content">
+                    <h2 class="article-title"><a href="#article3">Sustainable Business Models That Are Redefining Success</a></h2>
+                    <div class="article-byline">By Ethan Babb | May 1, 2025</div>
+                    <p>Highlighting companies that are proving profitability and environmental responsibility can go hand-in-hand through innovative business approaches.</p>
+                </div>
+            </article>
+            
+            <!-- Article 4 -->
+            <article class="article-card">
+                <div class="article-image" style="background-image: url('https://images.unsplash.com/photo-1555255707-c07966088b7b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80');">
+                    <div class="article-category">Tech/AI</div>
+                    <div class="article-comments">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        0 Comments / 0 New
+                    </div>
+                </div>
+                <div class="article-content">
+                    <h2 class="article-title"><a href="#article4">How AI is Transforming Real Estate Analytics</a></h2>
+                    <div class="article-byline">By Ethan Babb | April 28, 2025</div>
+                    <p>Examining the ways artificial intelligence is changing how property values are assessed, market trends are predicted, and investment decisions are made.</p>
+                </div>
+            </article>
+            
+            <!-- Article 5 -->
+            <article class="article-card">
+                <div class="article-image" style="background-image: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80');">
+                    <div class="article-category">College Football</div>
+                    <div class="article-comments">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        5 Comments / 3 New
+                    </div>
+                </div>
+                <div class="article-content">
+                    <h2 class="article-title"><a href="#article5">Spring Practice Standouts: Players to Watch This Fall</a></h2>
+                    <div class="article-byline">By Ethan Babb | April 25, 2025</div>
+                    <p>Breaking down the top performers from spring practices across major college football programs and their potential impact on the upcoming season.</p>
+                </div>
+            </article>
+            
+            <!-- Article 6 -->
+            <article class="article-card">
+                <div class="article-image" style="background-image: url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80');">
+                    <div class="article-category">Traveling</div>
+                    <div class="article-comments">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        4 Comments / 2 New
+                    </div>
+                </div>
+                <div class="article-content">
+                    <h2 class="article-title"><a href="#article6">Hidden Gems: Underrated Cities for Architecture Enthusiasts</a></h2>
+                    <div class="article-byline">By Ethan Babb | April 22, 2025</div>
+                    <p>Discovering lesser-known destinations that offer remarkable architectural experiences, from historical preservation to cutting-edge modern design.</p>
+                </div>
+            </article>
+        </div>
+        
+        <!-- Sidebar / About Me -->
+        <aside class="sidebar">
+            <h3>About Me</h3>
+            <div class="profile">
+                <div class="profile-image" style="background-image: url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80');"></div>
+                <div class="profile-info">
+                    <h4>Ethan Babb</h4>
+                    <p>Economics & Accounting graduate from Washington and Lee University with interests in Real Estate, Urban Planning, Business, Tech/AI, Football, and Traveling.</p>
+                </div>
+            </div>
+            <p>This blog explores the intersection of my professional interests and personal passions, offering analysis and insights that connect these diverse fields.</p>
+        </aside>
+    </div>
+    
+    <!-- Article Writing Button -->
+    <button class="write-article-btn" id="writeArticleBtn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+    </button>
+    
+    <!-- Article Writing Modal -->
+    <div class="modal" id="articleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Write New Article</h2>
+                <span class="close-modal" id="closeModal">&times;</span>
+            </div>
+            <form class="article-form" id="articleForm">
+                <label for="articleTitle">Title</label>
+                <input type="text" id="articleTitle" required>
+                
+                <label for="articleCategory">Category</label>
+                <select id="articleCategory" required>
+                    <option value="">Select a category</option>
+                    <option value="Real Estate">Real Estate</option>
+                    <option value="Urban Planning">Urban Planning</option>
+                    <option value="Business">Business</option>
+                    <option value="Tech/AI">Tech/AI</option>
+                    <option value="College Football">College Football</option>
+                    <option value="Traveling">Traveling</option>
+                </select>
+                
+                <label for="articleImage">Featured Image</label>
+                <input type="file" id="articleImage" accept="image/*">
+                <div class="image-upload-preview" id="imagePreview">No image selected</div>
+                
+                <label for="articleContent">Content</label>
+                <textarea id="articleContent" rows="10" required></textarea>
+                
+                <button type="submit">Publish Article</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Individual Article Page Template (hidden by default) -->
+    <div id="articlePage" style="display: none;">
+        <div class="main-content">
+            <article class="full-article">
+                <div class="article-header">
+                    <div class="article-category" id="articlePageCategory">Category</div>
+                    <h1 id="articlePageTitle">Article Title</h1>
+                    <div class="article-byline" id="articlePageByline">By Ethan Babb | Date</div>
+                </div>
+                <div class="article-featured-image" id="articlePageImage"></div>
+                <div class="article-full-content" id="articlePageContent">
+                    Article content goes here...
+                </div>
+                
+                <!-- Comments Section -->
+                <div class="comments-section">
+                    <h3>Comments</h3>
+                    <form class="comment-form" id="commentForm">
+                        <textarea placeholder="Add your comment..." required></textarea>
+                        <button type="submit">Post Comment</button>
+                    </form>
+                    <div class="comments-list" id="commentsList">
+                        <!-- Comments will be added here -->
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+    
+    <script>
+        // JavaScript for interactive features
+        document.addEventListener('DOMContentLoaded', function() {
+            // Article writing modal
+            const writeArticleBtn = document.getElementById('writeArticleBtn');
+            const articleModal = document.getElementById('articleModal');
+            const closeModal = document.getElementById('closeModal');
+            const articleForm = document.getElementById('articleForm');
+            const articleImage = document.getElementById('articleImage');
+            const imagePreview = document.getElementById('imagePreview');
+            
+            // Open modal
+            writeArticleBtn.addEventListener('click', function() {
+                articleModal.style.display = 'block';
+            });
+            
+            // Close modal
+            closeModal.addEventListener('click', function() {
+                articleModal.style.display = 'none';
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === articleModal) {
+                    articleModal.style.display = 'none';
+                }
+            });
+            
+            // Image preview
+            articleImage.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imagePreview.style.backgroundImage = `url(${e.target.result})`;
+                        imagePreview.textContent = '';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Form submission
+            articleForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form values
+                const title = document.getElementById('articleTitle').value;
+                const category = document.getElementById('articleCategory').value;
+                const content = document.getElementById('articleContent').value;
+                
+                // Create new article (in a real app, this would save to a database)
+                alert(`Article "${title}" in category "${category}" has been published!`);
+                
+                // Reset form
+                articleModal.style.display = 'none';
+                articleForm.reset();
+                imagePreview.style.backgroundImage = '';
+                imagePreview.textContent = 'No image selected';
+            });
+            
+            // Article links and page navigation
+            const articleLinks = document.querySelectorAll('.article-title a');
+            const mainContent = document.querySelector('.main-content');
+            const articlePage = document.getElementById('articlePage');
+            
+            articleLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // In a real application, this would fetch the article data
+                    // For this demo, we'll use the parent article card's data
+                    const articleCard = this.closest('.article-card');
+                    const title = this.textContent;
+                    const category = articleCard.querySelector('.article-category').textContent;
+                    const byline = articleCard.querySelector('.article-byline').textContent;
+                    const content = articleCard.querySelector('p').textContent;
+                    const imageBg = articleCard.querySelector('.article-image').style.backgroundImage;
+                    
+                    // Populate the article page
+                    document.getElementById('articlePageTitle').textContent = title;
+                    document.getElementById('articlePageCategory').textContent = category;
+                    document.getElementById('articlePageByline').textContent = byline;
+                    document.getElementById('articlePageContent').innerHTML = `<p>${content}</p><p>This is an expanded version of the article that would show the full content. In a real blog, this would contain multiple paragraphs of detailed information about the topic.</p><p>The article would go into greater depth about ${title.toLowerCase()}, providing insights, analysis, and perhaps some data or quotations from relevant sources.</p><p>As the blog owner, you would write this content through the article creation interface, which would then be saved and displayed here when a reader clicks on the article title.</p>`;
+                    document.getElementById('articlePageImage').style.backgroundImage = imageBg;
+                    
+                    // Show article page, hide main content
+                    mainContent.style.display = 'none';
+                    articlePage.style.display = 'block';
+                    
+                    // Create a back button
+                    const backButton = document.createElement('button');
+                    backButton.textContent = '← Back to Home';
+                    backButton.className = 'back-button';
+                    backButton.style.margin = '20px';
+                    backButton.style.padding = '10px 15px';
+                    backButton.style.backgroundColor = '#0052e9';
+                    backButton.style.color = 'white';
+                    backButton.style.border = 'none';
+                    backButton.style.borderRadius = '5px';
+                    backButton.style.cursor = 'pointer';
+                    
+                    backButton.addEventListener('click', function() {
+                        // Show main content, hide article page
+                        mainContent.style.display = 'grid';
+                        articlePage.style.display = 'none';
+                        // Remove back button
+                        this.remove();
+                    });
+                    
+                    // Add back button to the top of the article page
+                    articlePage.insertBefore(backButton, articlePage.firstChild);
+                });
+            });
+            
+            // Comment system
+            const commentForm = document.getElementById('commentForm');
+            const commentsList = document.getElementById('commentsList');
+            
+            commentForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const commentText = this.querySelector('textarea').value;
+                if (!commentText.trim()) return;
+                
+                // Create new comment (only visible to the blog owner)
+                const newComment = document.createElement('div');
+                newComment.className = 'comment';
+                
+                const commentAuthor = document.createElement('div');
+                commentAuthor.className = 'comment-author';
+                commentAuthor.textContent = 'Ethan Babb (You)';
+                
+                const commentDate = document.createElement('div');
+                commentDate.className = 'comment-date';
+                const now = new Date();
+                commentDate.textContent = `${now.toLocaleDateString()} at ${now.toLocaleTimeString()}`;
+                
+                const commentContent = document.createElement('div');
+                commentContent.className = 'comment-content';
+                commentContent.textContent = commentText;
+                
+                newComment.appendChild(commentAuthor);
+                newComment.appendChild(commentDate);
+                newComment.appendChild(commentContent);
+                
+                commentsList.appendChild(newComment);
+                
+                // Reset form
+                this.reset();
+            });
+        });
+    </script>
+</body>
+</html>
